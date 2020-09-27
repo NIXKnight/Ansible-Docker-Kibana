@@ -60,3 +60,30 @@
   tags:
     - "install"
     - "update"
+
+- name: Add Kibana NGINX Server Block
+  template:
+    src: "templates/etc/nginx/sites-available/kibana.conf.j2"
+    dest: "/etc/nginx/sites-available/kibana.conf"
+  when: ansible_os_family == 'Debian'
+  tags:
+    - "install"
+    - "configure"
+
+- name: Enable Kibana NGINX Server Block
+  file:
+    src: "/etc/nginx/sites-available/kibana.conf"
+    dest: "/etc/nginx/sites-enabled/kibana.conf"
+    state: link
+  when: ansible_os_family == 'Debian'
+  tags:
+    - "install"
+    - "configure"
+
+- name: Restart NGINX
+  service:
+    name: nginx
+    state: restarted
+  tags:
+    - "install"
+    - "configure"
