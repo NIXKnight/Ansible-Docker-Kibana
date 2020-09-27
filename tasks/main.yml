@@ -21,7 +21,7 @@
   docker_image:
     name: "{{ DOCKER_KIBANA_IMAGE }}"
     state: absent
-  when: kibana_container.exists
+  when: kibana_container.exists and DOCKER_KIBANA_REMOVE_OLD_IMAGE
   tags:
     - "install"
     - "update"
