@@ -40,7 +40,7 @@
     hostname: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
     image: "{{ DOCKER_KIBANA_IMAGE }}"
     state: started
-    restart_policy: unless-stopped
+    restart_policy: "{{ DOCKER_KIBANA_RESTART_POLICY }}"
     ports: "{{ DOCKER_KIBANA_PORT_MAPPING }}"
     volumes: "{{ DOCKER_KIBANA_VOLUME_MAPPING }}"
     env: "{{ DOCKER_KIBANA_ENVIRONMENT }}"
@@ -55,7 +55,7 @@
     hostname: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
     image: "{{ DOCKER_KIBANA_IMAGE }}"
     state: started
-    restart_policy: unless-stopped
+    restart_policy: "{{ DOCKER_KIBANA_RESTART_POLICY }}"
     volumes: "{{ DOCKER_KIBANA_VOLUME_MAPPING }}"
     env: "{{ DOCKER_KIBANA_ENVIRONMENT }}"
   when: not DOCKER_KIBANA_EXPOSE_PORTS
