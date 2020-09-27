@@ -1,2 +1,64 @@
 ---
 # tasks file for Ansible-Docker-Kibana
+- name: Check if Kibana Container is Running
+  docker_container_info:
+    name: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
+  register: kibana_container
+  tags:
+    - "install"
+    - "update"
+
+- name: Stop and Remove Kibana Container
+  docker_container:
+    name: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
+    state: "absent"
+  when: kibana_container.exists
+  tags:
+    - "install"
+    - "update"
+
+- name: Remove Kibana Image
+  docker_image:
+    name: "{{ DOCKER_KIBANA_IMAGE }}"
+    state: absent
+  when: kibana_container.exists
+  tags:
+    - "install"
+    - "update"
+
+- name: Pull Kibana Version {{ DOCKER_KIBANA_IMAGE }} Docker Image
+  docker_image:
+    name: "{{ DOCKER_KIBANA_IMAGE }}"
+    source: pull
+  tags:
+    - "install"
+    - "update"
+
+- name: Start Kibana Docker Container with Ports Exposed
+  docker_container:
+    name: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
+    hostname: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
+    image: "{{ DOCKER_KIBANA_IMAGE }}"
+    state: started
+    restart_policy: unless-stopped
+    ports: "{{ DOCKER_KIBANA_PORT_MAPPING }}"
+    volumes: "{{ DOCKER_KIBANA_VOLUME_MAPPING }}"
+    env: "{{ DOCKER_KIBANA_ENVIRONMENT }}"
+  when: DOCKER_KIBANA_EXPOSE_PORTS
+  tags:
+    - "install"
+    - "update"
+
+- name: Start Kibana Docker Container
+  docker_container:
+    name: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
+    hostname: "{{ DOCKER_KIBANA_CONTAINER_NAME }}"
+    image: "{{ DOCKER_KIBANA_IMAGE }}"
+    state: started
+    restart_policy: unless-stopped
+    volumes: "{{ DOCKER_KIBANA_VOLUME_MAPPING }}"
+    env: "{{ DOCKER_KIBANA_ENVIRONMENT }}"
+  when: not DOCKER_KIBANA_EXPOSE_PORTS
+  tags:
+    - "install"
+    - "update"
