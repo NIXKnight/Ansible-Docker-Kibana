@@ -1,0 +1,16 @@
+dependencies: []
+galaxy_info:
+  author: Saad Ali
+  description: Ansible role for deploying Kibana Docker container.
+  license: license (MIT)
+  min_ansible_version: 2.10
+  platforms:
+  - name: Debian
+    versions:
+      - buster
+  - name: Ubuntu
+    versions:
+      - bionic
+      - focal
+  galaxy_tags:
+    - kibana
