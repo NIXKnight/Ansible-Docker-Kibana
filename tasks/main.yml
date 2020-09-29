@@ -43,6 +43,7 @@
     restart_policy: "{{ DOCKER_KIBANA_RESTART_POLICY }}"
     ports: "{{ DOCKER_KIBANA_PORT_MAPPING }}"
     env: "{{ DOCKER_KIBANA_ENVIRONMENT }}"
+    network_mode: "{{ DOCKER_KIBANA_NETWORK_NAME }}"
   when: DOCKER_KIBANA_EXPOSE_PORTS
   tags:
     - "install"
@@ -56,6 +57,7 @@
     state: started
     restart_policy: "{{ DOCKER_KIBANA_RESTART_POLICY }}"
     env: "{{ DOCKER_KIBANA_ENVIRONMENT }}"
+    network_mode: "{{ DOCKER_KIBANA_NETWORK_NAME }}"
   when: not DOCKER_KIBANA_EXPOSE_PORTS
   tags:
     - "install"
